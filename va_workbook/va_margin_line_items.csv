@@ -1,0 +1,81 @@
+Ticker,Line Item,Unit,Metric
+KLAC,Gross profit/(loss),USD m,Gross profit
+KLAC,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+KLAC,Operating income/(loss),USD m,Operating income
+KLAC,Operating income/(loss) - Operating,USD m,Operating income (operating)
+LRCX,Gross margin,USD m,Gross profit
+LRCX,Gross margin - Operating,USD m,Gross profit (operating)
+LRCX,Operating income/(loss),USD m,Operating income
+LRCX,Operating income/(loss) - Operating,USD m,Operating income (operating)
+ASML,Gross profit/loss,EUR m,Gross profit
+ASML,Operating income/(loss),EUR m,Operating income
+CSCO,Gross margin,USD m,Gross profit
+CSCO,Gross margin - Operating,USD m,Gross profit (operating)
+CSCO,Operating income/(loss),USD m,Operating income
+CSCO,Operating income/(loss) - Operating,USD m,Operating income (operating)
+AMAT,Gross profit/(loss),USD m,Gross profit
+AMAT,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+AMAT,Operating income/(loss),USD m,Operating income
+AMAT,Operating income/(loss) - Operating,USD m,Operating income (operating)
+000660_KR,Gross profit/(loss),KRW bn,Gross profit
+000660_KR,Operating income/(loss),KRW bn,Operating income
+MU,Gross profit/(loss),USD m,Gross profit
+MU,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+MU,Operating income/(loss),USD m,Operating income
+MU,Operating income/(loss) - Operating,USD m,Operating income (operating)
+AVGO,Gross profit/(loss),USD m,Gross profit
+AVGO,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+AVGO,Operating income/(loss),USD m,Operating income
+AVGO,Operating income/(loss) - Operating,USD m,Operating income (operating)
+2330_TW,Gross profit/(loss),TWD m,Gross profit
+2330_TW,Operating income/(loss),TWD m,Operating income
+PLTR_US,Gross profit/(loss),USD m,Gross profit
+PLTR_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+PLTR_US,Operating income/(loss),USD m,Operating income
+PLTR_US,Operating income/(loss) - Operating,USD m,Operating income (operating)
+COST,Gross profit/(loss),USD m,Gross profit
+COST,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+COST,Operating income/(loss),USD m,Operating income
+COST,Operating income/(loss) - Operating,USD m,Operating income (operating)
+WMT,Gross profit/(loss),USD m,Gross profit
+WMT,Operating income/(loss),USD m,Operating income
+WMT,Operating income/(loss) - Operating,USD m,Operating income (operating)
+SPCX_US,Gross profit/(loss),USD m,Gross profit
+SPCX_US,Operating income/(loss),USD m,Operating income
+SPCX_US,Operating income/(loss) - Operating excl restructuring charges/(credits) & impairments,USD m,Operating income (operating)
+TSLA,Gross profit/(loss),USD m,Gross profit
+TSLA,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+TSLA,Operating income/(loss),USD m,Operating income
+TSLA,Operating income/(loss) - Operating,USD m,Operating income (operating)
+SHOP_US,Gross profit/(loss),USD m,Gross profit
+SHOP_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+SHOP_US,Operating income/(loss),USD m,Operating income
+SHOP_US,Operating income/(loss) - Operating,USD m,Operating income (operating)
+ARM_GB,Gross profit/(loss),USD m,Gross profit
+ARM_GB,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+ARM_GB,Operating income/(loss),USD m,Operating income
+ARM_GB,Operating income/(loss) - Operating,USD m,Operating income (operating)
+CRWD_US,Gross profit/(loss),USD m,Gross profit
+CRWD_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+CRWD_US,Income/(loss) from operations,USD m,Operating income
+CRWD_US,Income/(loss) from operations - Operating,USD m,Operating income (operating)
+PANW,Gross profit/(loss),USD m,Gross profit
+PANW,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+PANW,Operating income/(loss),USD m,Operating income
+PANW,Operating income/(loss) - Operating,USD m,Operating income (operating)
+INTC,Gross profit/(loss),USD m,Gross profit
+INTC,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+INTC,Operating income/(loss),USD m,Operating income
+INTC,Operating income/(loss) - Operating,USD m,Operating income (operating)
+MNST,Gross profit/(loss),USD m,Gross profit
+MNST,Operating income/(loss),USD m,Operating income
+MNST,Operating income/(loss) - Operating,USD m,Operating income (operating)
+WELL_US,Net operating income,USD m,Gross profit (NOI proxy)
+BE_US,Gross profit/(loss),USD m,Gross profit
+BE_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+BE_US,Operating income/(loss),USD m,Operating income
+BE_US,Operating income/(loss) - Operating,USD m,Operating income (operating)
+NET_US,Gross profit/(loss),USD m,Gross profit
+NET_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+NET_US,Operating income/(loss),USD m,Operating income
+NET_US,Operating income/(loss) - Operating,USD m,Operating income (operating)

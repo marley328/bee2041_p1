@@ -1,0 +1,67 @@
+Ticker,Line Item,Unit,Metric
+KLAC,Total revenue,USD m,Revenue
+KLAC,EPS - Diluted,USD/share,GAAP diluted EPS
+KLAC,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+LRCX,Total revenue,USD m,Revenue
+LRCX,EPS - Diluted,USD/share,GAAP diluted EPS
+LRCX,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+ASML,Total net sales,EUR m,Revenue
+ASML,EPS - Diluted,EUR/share,GAAP diluted EPS
+CSCO,Revenue,USD m,Revenue
+CSCO,EPS - Diluted,USD/share,GAAP diluted EPS
+CSCO,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+AMAT,Net sales,USD m,Revenue
+AMAT,EPS - Diluted,USD/share,GAAP diluted EPS
+AMAT,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+000660_KR,Total revenue,KRW bn,Revenue
+000660_KR,EPS incl. treasury - Applicable to common stockholders,KRW/share,GAAP EPS (no diluted line in VA)
+MU,Revenue,USD m,Revenue
+MU,EPS to common stock - Diluted,USD/share,GAAP diluted EPS
+MU,EPS to common stock - Diluted - Operating,USD/share,Operating diluted EPS
+AVGO,Revenue,USD m,Revenue
+AVGO,EPS - Diluted,USD/share,GAAP diluted EPS
+AVGO,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+2330_TW,"Sales revenue, net",TWD m,Revenue
+2330_TW,EPS - Diluted,TWD/share,GAAP diluted EPS
+PLTR_US,Total revenue,USD m,Revenue
+PLTR_US,EPS - Diluted,USD/share,GAAP diluted EPS
+PLTR_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+COST,Total revenue,USD m,Revenue
+COST,EPS Diluted,USD/share,GAAP diluted EPS
+COST,EPS Diluted - Operating,USD/share,Operating diluted EPS
+WMT,Total revenues,USD m,Revenue
+WMT,EPS-Diluted,USD/share,GAAP diluted EPS
+WMT,EPS-Diluted - Operating,USD/share,Operating diluted EPS
+SPCX_US,Revenue,USD m,Revenue
+SPCX_US,EPS - Diluted,USD/share,GAAP diluted EPS
+SPCX_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+TSLA,Total revenue,USD m,Revenue
+TSLA,Diluted EPS,USD/share,GAAP diluted EPS
+TSLA,Diluted EPS - Operating,USD/share,Operating diluted EPS
+SHOP_US,Total revenue,USD m,Revenue
+SHOP_US,EPS - Diluted,USD/share,GAAP diluted EPS
+SHOP_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+ARM_GB,Total revenue,USD m,Revenue
+ARM_GB,EPS - Diluted,USD/share,GAAP diluted EPS
+ARM_GB,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+CRWD_US,Revenue,USD m,Revenue
+CRWD_US,EPS - Diluted,USD/share,GAAP diluted EPS
+CRWD_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+PANW,Total revenue,USD m,Revenue
+PANW,EPS - Diluted,USD/share,GAAP diluted EPS
+PANW,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+INTC,Revenue,USD m,Revenue
+INTC,EPS attributable to common shareholders - Diluted,USD/share,GAAP diluted EPS
+INTC,EPS attributable to common shareholders - Diluted - Operating,USD/share,Operating diluted EPS
+MNST,Net revenue,USD m,Revenue
+MNST,EPS - Diluted,USD/share,GAAP diluted EPS
+MNST,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+WELL_US,Property revenues,USD m,Revenue
+WELL_US,EPS-Diluted,USD/share,GAAP diluted EPS
+WELL_US,Normalized FFO per share-Diluted,USD/share,Operating diluted EPS (normalized FFO/share)
+BE_US,Revenue,USD m,Revenue
+BE_US,EPS-Diluted,USD/share,GAAP diluted EPS
+BE_US,EPS-Diluted - Operating,USD/share,Operating diluted EPS
+NET_US,Total revenue,USD m,Revenue
+NET_US,EPS - Diluted,USD/share,GAAP diluted EPS
+NET_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
