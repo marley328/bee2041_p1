@@ -101,6 +101,8 @@ W["Status"] = [stat[(c, p)] for c, p in zip(W.VA_Ticker_Code, W.Period_Label)]
 W["Report date"] = [rdate.get((c, p)) for c, p in zip(W.VA_Ticker_Code, W.Period_Label)]
 for m in LABEL:
     if m not in W: W[m] = np.nan
+welli = W.VA_Ticker_Code == "WELL_US"
+W.loc[welli, "gp"] = W.loc[welli, "noi"]   # Welltower: gross profit = net operating income
 W["capex"] = W.capex.abs(); W["capex_other"] = W.capex_other.abs(); W["sbc"] = W.sbc.abs()
 W["sbc_source"] = np.where(W.sbc.notna(), "Visible Alpha", "")
 mk = {(r.Ticker, r.Fiscal_Period): (r.SBC_USD_m, r.Type) for r in man.itertuples()}
@@ -108,6 +110,12 @@ for i, r in W.iterrows():
     if pd.isna(r.sbc) and (r.VA_Ticker_Code, r.Period_Label) in mk:
         v, t = mk[(r.VA_Ticker_Code, r.Period_Label)]
         W.at[i, "sbc"] = v; W.at[i, "sbc_source"] = t + " (see Estimates_Disclosures)"
+for i, r in W[(W.Period_Type == "Quarterly") & W.sbc.isna()].iterrows():
+    k = (r.VA_Ticker_Code, f"FY-{int(r.Fiscal_Year)}")
+    if k in mk:
+        v, t = mk[k]
+        W.at[i, "sbc"] = v / 4
+        W.at[i, "sbc_source"] = f"Our estimate: {t.lower()} annual SBC ÷ 4"
 W["fcf"] = W.ocf - W.capex
 W["fcf_after_sbc"] = W.fcf - W.sbc
 W["fcf_incl_other"] = W.fcf - W.capex_other.fillna(0)
@@ -247,7 +255,8 @@ other_est = pd.DataFrame([
     ("SPCX", "FY2025 status", "Our treatment", "VA holds FY2025 actuals but lists no report date (pre-IPO); treated as reported."),
     ("WMT", "SBC base for projections", "Our adjustment", "FY26 SBC 3,603 less ~700 one-off PhonePe modification charge = 2,903 base."),
     ("WELL", "SBC base for projections", "Our adjustment", "FY25 SBC 1,556.7 less 1,408.7 one-off Executive & Key Employee LTIP awards = 148.1 base."),
-    ("WELL", "Gross margin", "Proxy", "No gross profit line in VA; Net operating income / property revenues shown as NOI margin instead."),
+    ("WELL", "Gross profit", "Definition (Kolytics)", "Welltower gross profit = Net operating income (VA line 'Net operating income'); gross margin = NOI / property revenues."),
+    ("WMT/COST/WELL/TSMC/SKH/MNST", "Quarterly SBC", "Our estimate", "Quarterly SBC = that fiscal year's annual SBC ÷ 4 (filing or projection). Welltower FY25 quarters include ¼ of the one-off LTIP award."),
     ("All", "FCF", "Our calculation", "FCF = operating cash flow − ABS(PP&E capex); after SBC also subtracts ABS(SBC)."),
 ], columns=["Ticker", "Item", "Type", "Detail"])
 
@@ -268,14 +277,14 @@ for code, tk, nm, *_r in CO:
                    "eps_op": "No non-GAAP EPS line in VA", "sbc": "No SBC line in VA or filings",
                    "ocf": "Cash flow screenshot not supplied", "capex": "Cash flow screenshot not supplied",
                    "gp": "No gross profit line in VA", "oi": "No operating income line in VA"}.get(m, "No data")
-            if tk == "WELL" and m in ("gp", "oi", "oi_adj"): why = "REIT: VA has NOI, not gross profit / operating income"
+            if tk == "WELL" and m in ("oi", "oi_adj"): why = "REIT: definition being agreed (see chat); VA lines not yet pulled"
+            if tk == "WELL" and m == "gp_adj": why = "REIT: no adjusted NOI used"
             if tk == "WELL" and m == "eps_op": why = "REIT: normalized FFO/share used instead"
-            if tk == "MNST" and m in ("ocf", "capex", "sbc"): why = "Cash flow screenshot not supplied"
+            if tk == "MNST" and m in ("ocf", "capex"): continue
             miss.append((tk, nm, lab, "All years", why))
         else:
             miss.append((tk, nm, lab, ", ".join(f"FY{int(y)}" for y in missing_years), "Consensus not available for these years"))
-qsbc = sorted({C[c][1] for c in man.Ticker.unique()})
-miss.append(("/".join(qsbc), "", "SBC (quarterly)", "All quarters", "Only annual SBC available from filings / projections"))
+miss.append(("MNST", "Monster Beverage", "Operating cash flow / capex", "All periods", "Monster-only VA workbook sent for refresh; not yet returned"))
 for r in rev.itertuples():
     if pd.isna(r._10) and r.Metric in ("Revenue", "GAAP diluted EPS"):
         miss.append((r.Ticker, r.Company, f"12M consensus revision ({r.Metric})", f"FY{r._5}", "No consensus 12 months ago (recent listing / coverage)"))
