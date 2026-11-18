@@ -7,7 +7,8 @@ from openpyxl.utils import get_column_letter
 
 S = "/tmp/claude-0/-home-user-bee2041-p1/d82c9cc5-7263-5271-8116-79a86939a805/scratchpad"
 VA = "/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/ceea9a74-VA_Revenue_EPS_Margins_CashFlow_Actuals_Consensus_Beat_Miss_2025_2029_AsOf_2026-11-18.xlsx"
-EXTRA_VA = ["/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/f9f30f34-MNST_Cash_Flow_VA.xlsx"]
+EXTRA_VA = ["/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/f9f30f34-MNST_Cash_Flow_VA.xlsx",
+            "/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/70eb886f-MNST_WELL_Pending_Lines_VA.xlsx"]
 PRICES = f"{S}/Adjusted_Close_2026-01-01_to_2026-11-16.xlsx"
 QUOTES = f"{S}/charts/fmp_quotes.json"
 OUT = sys.argv[1]
@@ -47,12 +48,14 @@ METRIC = {"Revenue": "revenue", "GAAP diluted EPS": "eps_gaap", "GAAP EPS (no di
           "Operating diluted EPS": "eps_op", "Operating diluted EPS (normalized FFO/share)": "ffo",
           "Gross profit": "gp", "Gross profit (NOI proxy)": "noi", "Gross profit (operating)": "gp_adj",
           "Operating income": "oi", "Operating income (operating)": "oi_adj", "Operating cash flow": "ocf",
-          "Capex": "capex", "Other capex (software/intangibles)": "capex_other", "Stock-based compensation": "sbc"}
+          "Capex": "capex", "Other capex (software/intangibles)": "capex_other", "Stock-based compensation": "sbc",
+          "G&A": "ga", "D&A": "da", "Adjusted EBITDA": "adj_ebitda"}
 LABEL = {"revenue": "Revenue", "eps_gaap": "GAAP diluted EPS", "eps_op": "Non-GAAP (operating) diluted EPS",
          "ffo": "Normalized FFO per diluted share", "gp": "Gross profit (GAAP)", "gp_adj": "Gross profit (adjusted)",
          "noi": "Net operating income", "oi": "Operating income (GAAP)", "oi_adj": "Operating income (adjusted)",
          "ocf": "Operating cash flow", "capex": "Capex (PP&E)", "capex_other": "Software / intangibles capex",
-         "sbc": "Stock-based compensation"}
+         "sbc": "Stock-based compensation", "ga": "General and administrative (WELL)",
+         "da": "Depreciation & amortization (WELL)", "adj_ebitda": "Adjusted EBITDA (WELL)"}
 linemap = {}
 for f in ("va_line_items", "va_margin_line_items", "va_cashflow_line_items"):
     for r in csv.DictReader(open(f"{S}/{f}.csv")):
@@ -111,6 +114,8 @@ for m in LABEL:
     if m not in W: W[m] = np.nan
 welli = W.VA_Ticker_Code == "WELL_US"
 W.loc[welli, "gp"] = W.loc[welli, "noi"]   # Welltower: gross profit = net operating income
+W.loc[welli, "oi"] = W.loc[welli, "noi"] - W.loc[welli, "ga"] - W.loc[welli, "da"]   # GAAP operating income
+W.loc[welli, "oi_adj"] = W.loc[welli, "adj_ebitda"] - W.loc[welli, "da"]             # adjusted operating income
 W["capex"] = W.capex.abs(); W["capex_other"] = W.capex_other.abs(); W["sbc"] = W.sbc.abs()
 W["sbc_source"] = np.where(W.sbc.notna(), "Visible Alpha", "")
 mk = {(r.Ticker, r.Fiscal_Period): (r.SBC_USD_m, r.Type) for r in man.itertuples()}
@@ -264,6 +269,8 @@ other_est = pd.DataFrame([
     ("WMT", "SBC base for projections", "Our adjustment", "FY26 SBC 3,603 less ~700 one-off PhonePe modification charge = 2,903 base."),
     ("WELL", "SBC base for projections", "Our adjustment", "FY25 SBC 1,556.7 less 1,408.7 one-off Executive & Key Employee LTIP awards = 148.1 base."),
     ("WELL", "Gross profit", "Definition (Kolytics)", "Welltower gross profit = Net operating income (VA line 'Net operating income'); gross margin = NOI / property revenues."),
+    ("WELL", "Operating income (GAAP)", "Definition (Kolytics)", "Net operating income − General and administrative − Depreciation & amortization (VA lines). FY25 G&A includes the one-off $1.4bn LTIP award."),
+    ("WELL", "Operating income (adjusted)", "Definition (Kolytics)", "Adjusted EBITDA − Depreciation & amortization (VA lines)."),
     ("WMT/COST/WELL/TSMC/SKH/MNST", "Quarterly SBC", "Our estimate", "Quarterly SBC = that fiscal year's annual SBC ÷ 4 (filing or projection). Welltower FY25 quarters include ¼ of the one-off LTIP award."),
     ("All", "FCF", "Our calculation", "FCF = operating cash flow − ABS(PP&E capex); after SBC also subtracts ABS(SBC)."),
 ], columns=["Ticker", "Item", "Type", "Detail"])
@@ -285,7 +292,6 @@ for code, tk, nm, *_r in CO:
                    "eps_op": "No non-GAAP EPS line in VA", "sbc": "No SBC line in VA or filings",
                    "ocf": "Cash flow screenshot not supplied", "capex": "Cash flow screenshot not supplied",
                    "gp": "No gross profit line in VA", "oi": "No operating income line in VA"}.get(m, "No data")
-            if tk == "WELL" and m in ("oi", "oi_adj"): why = "REIT: definition being agreed (see chat); VA lines not yet pulled"
             if tk == "WELL" and m == "gp_adj": why = "REIT: no adjusted NOI used"
             if tk == "WELL" and m == "eps_op": why = "REIT: normalized FFO/share used instead"
             miss.append((tk, nm, lab, "All years", why))
