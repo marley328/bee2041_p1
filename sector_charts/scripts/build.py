@@ -47,7 +47,7 @@ con["asof"] = pd.Timestamp("1899-12-30") + pd.to_timedelta(num(con.As_Of_Date), 
 
 def metric_of(li, t):
     l = li.lower()
-    if t == "WELL" and l.startswith("normalized ffo"): return "op"
+    if t == "WELL" and l.startswith("normalized ffo"): return "ffo"
     if "eps" not in l: return "rev"
     return "op" if "operating" in l else "gaap"
 for d in (act, con):
@@ -128,13 +128,13 @@ def growth(a, b):
     if np.isnan(a) or np.isnan(b) or a <= 0: return np.nan
     return b / a - 1
 
-METRIC_NAME = {"rev": "revenue", "gaap": "GAAP EPS", "op": "operating EPS"}
-METRIC_TITLE = {"rev": "Revenue", "gaap": "GAAP diluted EPS", "op": "Operating (non-GAAP) diluted EPS"}
+METRIC_NAME = {"rev": "revenue", "gaap": "GAAP EPS", "op": "operating EPS", "ffo": "normalized FFO per share"}
+METRIC_TITLE = {"rev": "Revenue", "gaap": "GAAP diluted EPS", "op": "Operating (non-GAAP) diluted EPS", "ffo": "Normalized FFO per diluted share"}
 SOURCE = f"Source: Visible Alpha ({SNAP:%-d %b %Y}); company reports."
-SLUG = {"rev": "revenue", "gaap": "gaap_eps", "op": "operating_eps"}
+SLUG = {"rev": "revenue", "gaap": "gaap_eps", "op": "operating_eps", "ffo": "normalized_ffo"}
 
 def fy_label(t, y):
-    return f"FY{str(y)[2:]}" + ("" if stat(t, "rev", y) == "A" or stat(t, eps_metric(t), y) == "A" else "E")
+    return f"FY{str(y)[2:]}" + ("" if stat(t, "rev", y) == "A" or stat(t, "gaap", y) == "A" else "E")
 
 def fye_note(t):
     m = FYE[t]
@@ -152,7 +152,7 @@ def company_chart(t, metric, sec_no):
     ys = [y for y in YEARS if not np.isnan(val(t, metric, y))]
     vals = [val(t, metric, y) for y in ys]; sts = [stat(t, metric, y) for y in ys]
     fy = fwd_year(t); name = SHORT[t]; mname = METRIC_NAME[metric]
-    if metric == "op" and t == "WELL": mname = "normalized FFO per share"
+    pass
     # headline: growth in the first consensus year
     first_e = fy if (fy in ys and stat(t, metric, fy) == "E") else next((y for y, s in zip(ys, sts) if s == "E"), None)
     g = growth(val(t, metric, first_e - 1), val(t, metric, first_e)) if first_e and first_e - 1 in ys else np.nan
@@ -172,7 +172,7 @@ def company_chart(t, metric, sec_no):
     unit = unit_label(t, metric)
     note = fye_note(t)
     if t == "SPCX": note += " FY25 is Visible Alpha actuals; no report date is listed (pre-IPO)."
-    if t == "WELL" and metric == "op": note += " Operating line is normalized FFO per diluted share."
+    if metric == "ffo": note += " Normalized FFO is a REIT measure, not EPS; Welltower has no operating EPS line in Visible Alpha."
     if t == "KLAC" and metric != "rev": note += " Per-share figures adjusted for the 2026 share split."
     if metric == "op" and t in ("ASML", "2330", "000660"): return None
     fig = fig_base(title, legend, None, SOURCE, "Note: " + note)
@@ -262,7 +262,7 @@ def sector_index_chart(sector, metric, sec_no):
     notes = ["Each company rebased to its own FY25 = 100, so currencies drop out. Median of the company indices."]
     if excluded:
         notes.append("Excluded: " + ", ".join(f"{SHORT[t]} ({w})" for t, w in excluded.items()) + ".")
-    if metric == "op" and "WELL" in idx.index: notes.append("Welltower uses normalized FFO per share.")
+    if metric == "op" and sector == "Other": notes.append("Welltower has no operating EPS line (its normalized FFO is shown separately).")
     use_log = idx.values.max() / max(idx.values.min(), 1) > 8
     legend = [("line", "Sector median", (TEAL_DARK, "-")), ("line", "Company", (TEAL_LIGHT, "-"))]
     fig = fig_base(title, legend, f"{'Everything else' if sector == 'Other' else sector} {METRIC_TITLE[metric]}, indexed FY25 = 100" + (" (log scale)" if use_log else ""),
@@ -323,33 +323,55 @@ def valuation_rows(sector):
     out = []
     for t in SECTORS[sector]:
         fy = fwd_year(t); ty = trail_year(t, "rev")
-        em = eps_metric(t); tye = trail_year(t, em)
         p = price_local(t); mc = mcap_local(t)
         rev_t, rev_f = val(t, "rev", ty), val(t, "rev", fy)
-        eps_t, eps_f = val(t, em, tye), val(t, em, fy)
         sc = REV_SCALE.get(t, 1e6)
-        out.append(dict(
-            Ticker=t, Company=SHORT[t], Sector=sector, Currency=CCY.get(t, "USD"), Price_local=p, Price_date=PRICE_DATE,
-            Shares=quotes[t]["shares"], Market_cap_local=mc, Trailing_FY=ty, Forward_FY=fy, EPS_line=METRIC_NAME[em],
-            Revenue_trailing=rev_t, Revenue_forward=rev_f, EPS_trailing=eps_t, EPS_forward=eps_f,
-            PS_trailing=mc / (rev_t * sc) if rev_t > 0 else np.nan,
-            PS_forward=mc / (rev_f * sc) if rev_f > 0 else np.nan,
-            PE_trailing=p / eps_t if eps_t > 0 else np.nan,
-            PE_forward=p / eps_f if eps_f > 0 else np.nan,
-            Sales_growth_fwd=growth(val(t, "rev", fy - 1), rev_f),
-            EPS_growth_fwd=growth(val(t, em, fy - 1), eps_f),
-        ))
+        rec = dict(Ticker=t, Company=SHORT[t], Sector=sector, Currency=CCY.get(t, "USD"), Price_local=p,
+                   Price_date=PRICE_DATE, Shares=quotes[t]["shares"], Market_cap_local=mc, Trailing_FY=ty, Forward_FY=fy,
+                   Revenue_trailing=rev_t, Revenue_forward=rev_f,
+                   PS_trailing=mc / (rev_t * sc) if rev_t > 0 else np.nan,
+                   PS_forward=mc / (rev_f * sc) if rev_f > 0 else np.nan,
+                   Sales_growth_fwd=growth(val(t, "rev", fy - 1), rev_f))
+        for m, suf in (("gaap", "gaap"), ("op", "op")):
+            if not has(t, m):
+                for k in ("EPS_trailing", "EPS_forward", "PE_trailing", "PE_forward", "EPS_growth"):
+                    rec[f"{k}_{suf}"] = np.nan
+                rec[f"has_{suf}"] = False
+                continue
+            tye = trail_year(t, m)
+            et, ef = val(t, m, tye) if tye else np.nan, val(t, m, fy)
+            rec.update({f"EPS_trailing_{suf}": et, f"EPS_forward_{suf}": ef,
+                        f"PE_trailing_{suf}": p / et if et > 0 else np.nan,
+                        f"PE_forward_{suf}": p / ef if ef > 0 else np.nan,
+                        f"EPS_growth_{suf}": growth(val(t, m, fy - 1), ef), f"has_{suf}": True})
+        out.append(rec)
     return pd.DataFrame(out)
 
-SHORTM = {"PS_trailing": "trailing P/S", "PS_forward": "forward P/S", "PE_trailing": "trailing P/E", "PE_forward": "forward P/E", "Sales_growth_fwd": "forward sales growth", "EPS_growth_fwd": "forward EPS growth"}
+SHORTM = {"PS_trailing": "trailing P/S", "PS_forward": "forward P/S",
+          "PE_trailing_gaap": "trailing GAAP P/E", "PE_forward_gaap": "forward GAAP P/E",
+          "PE_trailing_op": "trailing non-GAAP P/E", "PE_forward_op": "forward non-GAAP P/E",
+          "Sales_growth_fwd": "forward sales growth", "EPS_growth_gaap": "forward GAAP EPS growth",
+          "EPS_growth_op": "forward non-GAAP EPS growth"}
 VAL_METRICS = [
     ("PS_trailing", "Price to sales, trailing", "x", "price ÷ last reported fiscal-year revenue per share"),
     ("PS_forward", "Price to forward sales", "x", "price ÷ forward fiscal-year consensus revenue per share"),
-    ("PE_trailing", "Price to earnings, trailing", "x", "price ÷ last reported fiscal-year diluted EPS"),
-    ("PE_forward", "Price to forward earnings", "x", "price ÷ forward fiscal-year consensus diluted EPS"),
+    ("PE_trailing_gaap", "GAAP price to earnings, trailing", "x", "price ÷ last reported fiscal-year GAAP diluted EPS"),
+    ("PE_forward_gaap", "GAAP price to forward earnings", "x", "price ÷ forward fiscal-year consensus GAAP diluted EPS"),
+    ("PE_trailing_op", "Non-GAAP price to earnings, trailing", "x", "price ÷ last reported fiscal-year operating (non-GAAP) diluted EPS"),
+    ("PE_forward_op", "Non-GAAP price to forward earnings", "x", "price ÷ forward fiscal-year consensus operating (non-GAAP) diluted EPS"),
     ("Sales_growth_fwd", "Sales growth, forward fiscal year", "%", "forward fiscal-year consensus revenue vs the prior fiscal year"),
-    ("EPS_growth_fwd", "EPS growth, forward fiscal year", "%", "forward fiscal-year consensus diluted EPS vs the prior fiscal year"),
+    ("EPS_growth_gaap", "GAAP EPS growth, forward fiscal year", "%", "forward fiscal-year consensus GAAP diluted EPS vs the prior fiscal year"),
+    ("EPS_growth_op", "Non-GAAP EPS growth, forward fiscal year", "%", "forward fiscal-year consensus operating diluted EPS vs the prior fiscal year"),
 ]
+NO_OP = "no non-GAAP EPS"
+
+def axis_cap(plotv):
+    """Cap the axis when one or two outliers would squash the rest."""
+    pos = np.sort(plotv[plotv > 0])
+    if len(pos) < 3:
+        return None
+    ref = pos[-3] if len(pos) >= 4 else pos[-2]
+    return ref * 1.6 if pos[-1] > ref * 3 else None
 
 def fmt_metric(v, kind):
     if np.isnan(v): return "n/m"
@@ -357,7 +379,7 @@ def fmt_metric(v, kind):
 
 def ranked_chart(df, col, label, kind, defn, sector, sec_no, i):
     disp = "Everything else" if sector == "Other" else sector
-    d = df[["Company", "Ticker", col, "Forward_FY", "Trailing_FY"]].copy()
+    d = df[["Company", "Ticker", col, "Forward_FY", "Trailing_FY", "has_op"]].copy()
     good = d[col].notna()
     d = pd.concat([d[good].sort_values(col, ascending=False), d[~good]])
     med = d[col].median()
@@ -369,7 +391,8 @@ def ranked_chart(df, col, label, kind, defn, sector, sec_no, i):
         title = f"{disp}: median {SHORTM[col]} is {pct(med)}; {top.Company} leads at {pct(top[col])}"
 
     legend = [("box", "Company", (TEAL_LIGHT, None, None)), ("line", f"{disp} median", ("#6b6b6b", (0, (4, 3))))]
-    em_note = "EPS uses operating (non-GAAP) diluted EPS; GAAP where VA has no operating line (ASML, TSMC, SK Hynix). " if "EPS" in label or "earnings" in label else ""
+    em_note = ("Non-GAAP = Visible Alpha operating diluted EPS only; companies without one are shown as 'no non-GAAP EPS', not filled with GAAP. "
+               if col.endswith("_op") else "GAAP diluted EPS for every company. " if col.endswith("_gaap") else "")
     fy_note = "Forward FY = first fiscal year ending more than three months after the snapshot (FY28 for January year-ends, FY27 for the rest). "
     fig = fig_base(title, legend, f"{label}, as at {PRICE_DATE:%-d %b %Y}",
                    f"Source: Visible Alpha ({SNAP:%-d %b %Y}); price data ({PRICE_DATE:%-d %b %Y} close); FMP shares outstanding.",
@@ -380,13 +403,18 @@ def ranked_chart(df, col, label, kind, defn, sector, sec_no, i):
     y = np.arange(n)[::-1]
     vals = d[col].values.astype(float)
     plotv = np.where(np.isnan(vals), 0, vals * (100 if kind == "%" else 1))
+    cap = axis_cap(plotv)
+    off = plotv > cap if cap else np.zeros(len(plotv), bool)
+    plotv = np.where(off, cap, plotv)
     hgt = 0.62 if n > 6 else 0.5
     ax.barh(y, plotv, height=hgt, color=TEAL_LIGHT, linewidth=0, zorder=3)
     mx = np.nanmax(np.abs(plotv)) or 1
     lo = min(0, np.nanmin(plotv)); hi = max(0, np.nanmax(plotv))
-    ax.set_xlim(lo - (0.12 * (hi - lo) if lo < 0 else 0), hi + 0.14 * (hi - lo))
-    for yi, v, raw in zip(y, plotv, vals):
-        txt = fmt_metric(raw, kind)
+    ax.set_xlim(lo - (0.12 * (hi - lo) if lo < 0 else 0), hi + (0.3 if cap else 0.14) * (hi - lo))
+    for yi, v, raw, hop in zip(y, plotv, vals, d.has_op.values):
+        txt = NO_OP if (col.endswith("_op") and not hop) else fmt_metric(raw, kind)
+        if cap and v >= cap and not np.isnan(raw):
+            txt += " (off scale)"
         ax.text(v + (0.01 * (hi - lo) if v >= 0 else -0.01 * (hi - lo)), yi, txt, va="center",
                 ha="left" if v >= 0 else "right", fontproperties=F["400"], fontsize=12.5, zorder=6,
                 color=INK if not np.isnan(raw) else MUTED,
@@ -421,6 +449,9 @@ if __name__ == "__main__":
             for tk in SECTORS[sector]:
                 if has(tk, metric):
                     company_chart(tk, metric, f"{si}{'bcd'[mi]}")
+        for tk in SECTORS[sector]:
+            if has(tk, "ffo"):
+                company_chart(tk, "ffo", f"{si}e")
     vals = pd.concat(allval)
     long = A[["Ticker", "Company_Name", "metric", "Line_Item", "Currency", "Fiscal_Year", "value", "status"]].copy()
     long["Sector"] = long.Ticker.map(SECTOR_OF)
@@ -430,4 +461,4 @@ if __name__ == "__main__":
         pd.concat(idx_tables).round(1).to_excel(xw, sheet_name="Indexed FY25=100", index=False)
         long.rename(columns={"status": "A=reported E=consensus"}).sort_values(["Sector", "Ticker", "metric", "Fiscal_Year"]).to_excel(xw, sheet_name="FY values", index=False)
     print(len(saved), "charts")
-    print(vals[["Ticker", "Trailing_FY", "Forward_FY", "PS_trailing", "PS_forward", "PE_trailing", "PE_forward", "Sales_growth_fwd", "EPS_growth_fwd"]].round(2).to_string())
+    print(vals[["Ticker", "Trailing_FY", "Forward_FY", "PS_trailing", "PS_forward", "PE_trailing_gaap", "PE_forward_gaap", "PE_trailing_op", "PE_forward_op", "EPS_growth_gaap", "EPS_growth_op"]].round(2).to_string())

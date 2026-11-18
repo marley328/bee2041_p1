@@ -18,22 +18,27 @@ SRC = (f"Source: Visible Alpha ({B.SNAP:%-d %b %Y}); price data ({B.PRICE_DATE:%
 FWD = "Forward = FY28 for January year-ends, FY27 for the rest; trailing = last reported fiscal year."
 
 SPECS = [
-    ("PE_forward", "forward P/E", "Price to forward earnings",
-     "P/E = share price ÷ consensus diluted EPS: operating (non-GAAP) where Visible Alpha has it, GAAP for ASML, TSMC and "
-     "SK Hynix; Welltower uses normalized FFO per share. "),
-    ("PE_trailing", "trailing P/E", "Price to trailing earnings",
-     "P/E = share price ÷ last reported diluted EPS: operating where Visible Alpha has it, GAAP for ASML, TSMC and SK Hynix; "
-     "Welltower uses normalized FFO per share. n/m = negative or no reported EPS. "),
+    ("PE_forward_gaap", "forward GAAP P/E", "GAAP price to forward earnings", "P/E = share price ÷ consensus GAAP diluted EPS, every company. "),
+    ("PE_trailing_gaap", "trailing GAAP P/E", "GAAP price to trailing earnings", "P/E = share price ÷ last reported GAAP diluted EPS, every company. "),
+    ("PE_forward_op", "forward non-GAAP P/E", "Non-GAAP price to forward earnings",
+     "P/E = share price ÷ consensus operating (non-GAAP) diluted EPS; companies without that line are not filled with GAAP. "),
+    ("PE_trailing_op", "trailing non-GAAP P/E", "Non-GAAP price to trailing earnings",
+     "P/E = share price ÷ last reported operating (non-GAAP) diluted EPS; companies without that line are not filled with GAAP. "),
     ("PS_forward", "forward P/S", "Price to forward sales", "P/S = market value ÷ consensus revenue, local currency. "),
     ("PS_trailing", "trailing P/S", "Price to trailing sales", "P/S = market value ÷ last reported revenue, local currency. "),
 ]
 
+def axis_cap(v):
+    pos = np.sort(v[v > 0])
+    if len(pos) < 4: return None
+    return pos[-3] * 1.6 if pos[-1] > pos[-3] * 3 else None
+
 def chart(col, short, label, defn, fname):
-    d = df[["Company", "Sector", col]].copy()
+    d = df[["Company", "Sector", col, "has_op"]].copy()
     good = d[col].notna()
     d = pd.concat([d[good].sort_values(col, ascending=False), d[~good]]).reset_index(drop=True)
     med = {s: df[df.Sector == s][col].median() for s in SEC_ORDER}
-    top, low = d[good.loc[d.index] if False else d[col].notna()].iloc[0], d[d[col].notna()].iloc[-1]
+    top, low = d[d[col].notna()].iloc[0], d[d[col].notna()].iloc[-1]
     title = (f"{top.Company} is the most expensive on {short} at {top[col]:,.0f}x; "
              f"{low.Company} the cheapest at {low[col]:,.1f}x")
     legend = [("box", f"{SEC_NAME[s]} (median {med[s]:,.1f}x)", (SEC_COLOR[s], None, None)) for s in SEC_ORDER]
@@ -43,15 +48,18 @@ def chart(col, short, label, defn, fname):
     ax = fig.add_axes([0.2, 0.155, 0.72, 0.6])
     y = np.arange(n)[::-1]
     vals = d[col].values.astype(float)
-    hi = np.nanmax(vals)
-    ax.barh(y, np.nan_to_num(vals), height=0.68, color=[SEC_COLOR[s] for s in d.Sector], linewidth=0, zorder=3)
-    for yi, v in zip(y, vals):
-        txt = "n/m" if np.isnan(v) else (f"{v:,.1f}x" if v < 100 else f"{v:,.0f}x")
-        ax.text((0 if np.isnan(v) else v) + hi * 0.008, yi, txt, va="center", ha="left", fontproperties=F["400"],
+    cap = axis_cap(np.nan_to_num(vals))
+    pv = np.nan_to_num(vals) if not cap else np.minimum(np.nan_to_num(vals), cap)
+    hi = np.nanmax(pv)
+    ax.barh(y, pv, height=0.68, color=[SEC_COLOR[s] for s in d.Sector], linewidth=0, zorder=3)
+    for yi, v, p_, hop in zip(y, vals, pv, d.has_op.values):
+        txt = ("no non-GAAP EPS" if (col.endswith("_op") and not hop) else "n/m") if np.isnan(v) else (f"{v:,.1f}x" if v < 100 else f"{v:,.0f}x")
+        if cap and not np.isnan(v) and v > cap: txt += " (off scale)"
+        ax.text((0 if np.isnan(v) else p_) + hi * 0.008, yi, txt, va="center", ha="left", fontproperties=F["400"],
                 fontsize=11.5, color=MUTED if np.isnan(v) else INK, zorder=6)
     ax.set_yticks(y, d.Company.values)
     ax.set_ylim(-0.7, n - 0.3)
-    ax.set_xlim(0, hi * 1.1)
+    ax.set_xlim(0, hi * (1.25 if cap else 1.1))
     ax.xaxis.set_major_locator(plt.MaxNLocator(7))
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:,.0f}x"))
     style_axes(ax, ygrid=False, xgrid=True); relabel(ax)

@@ -77,9 +77,12 @@ def dumbbell(a, b, label_a, label_b, title, sub, kind, fname, note, clip=None, l
                         ha="left" if side > 0 else "right", va="center", fontproperties=F["700"], fontsize=11, color=INK,
                         bbox=dict(boxstyle="square,pad=0.1", facecolor="white", edgecolor="none"), zorder=5)
         if pd.isna(vb) and pd.isna(va):
-            ax.text(lo, yy, " n/m", va="center", fontproperties=F["400"], fontsize=11, color=MUTED)
-        elif pd.isna(va):
-            pass
+            lab = "no non-GAAP EPS" if (b.endswith("_op") and not r.has_op) else "n/m"
+            ax.text(lo, yy, " " + lab, va="center", fontproperties=F["400"], fontsize=11, color=MUTED)
+        elif pd.isna(vb):
+            lab = "no non-GAAP EPS" if (b.endswith("_op") and not r.has_op) else "n/m"
+            ax.annotate(lab, (min(va, hi), yy), xytext=(12, 0), textcoords="offset points", va="center",
+                        fontproperties=F["400"], fontsize=11, color=MUTED)
     # sector medians (forward), drawn per sector block
     for (hy, s), nxt in zip(heads, heads[1:] + [(n, None)]):
         med = conv(df[df.Sector == s][b].median())
@@ -95,7 +98,7 @@ def dumbbell(a, b, label_a, label_b, title, sub, kind, fname, note, clip=None, l
     ax.set_ylim(0.3, n + 0.2)
     if log:
         ax.set_xscale("log")
-        ticks = [t for t in [1, 2, 5, 10, 20, 50, 100, 200, 500] if lo <= t <= hi]
+        ticks = [t for t in [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000] if lo <= t <= hi]
         ax.xaxis.set_major_locator(FixedLocator(ticks)); ax.xaxis.set_minor_locator(NullLocator())
     ax.set_xlim(lo, hi * (1.0 if clip else 1.0))
     ax.xaxis.set_major_formatter(FuncFormatter(
@@ -118,20 +121,31 @@ dumbbell("PS_trailing", "PS_forward", "Trailing P/S", "Forward P/S",
          f"{t.Company} trades on {t.PS_forward:,.0f}x forward sales; {lowest.Company} on {lowest.PS_forward:,.1f}x",
          f"Price to sales, all 23 companies, as at {B.PRICE_DATE:%-d %b %Y} (log scale)", "x", "S1_price_to_sales.png",
          "P/S = market value ÷ fiscal-year revenue, local currency. " + FWD_NOTE, log=True)
-# 2) P/E
-t = df.loc[df.PE_forward.idxmax()]; lo_ = df.loc[df.PE_forward.idxmin()]
-dumbbell("PE_trailing", "PE_forward", "Trailing P/E", "Forward P/E",
-         f"Forward P/E runs from {lo_.PE_forward:,.1f}x at {lo_.Company} to {t.PE_forward:,.0f}x at {t.Company}",
-         f"Price to earnings, all 23 companies, as at {B.PRICE_DATE:%-d %b %Y} (log scale)", "x", "S2_price_to_earnings.png",
-         "P/E = share price ÷ diluted EPS: operating (non-GAAP) where Visible Alpha has it, GAAP for ASML, TSMC and SK Hynix; "
-         "Welltower uses normalized FFO per share. Missing dot = negative EPS (n/m). " + FWD_NOTE, log=True)
-# 3) growth
-t = df.loc[df.Sales_growth_fwd.idxmax()]
-dumbbell("Sales_growth_fwd", "EPS_growth_fwd", "Sales growth", "EPS growth",
-         f"Tech leads forward growth: median sales {df[df.Sector=='Tech'].Sales_growth_fwd.median()*100:,.0f}%, EPS {df[df.Sector=='Tech'].EPS_growth_fwd.median()*100:,.0f}%",
-         "Consensus growth in the forward fiscal year vs the prior year, all 23 companies", "%", "S3_sales_and_eps_growth.png",
-         "EPS growth uses operating diluted EPS where available (GAAP for ASML, TSMC, SK Hynix). Axis capped at +150%; "
-         "values beyond are labelled. " + FWD_NOTE, clip=150)
+# 2) P/E, strictly GAAP and strictly non-GAAP
+for suf, lab, fname, note in (
+        ("gaap", "GAAP", "S2a_price_to_earnings_gaap.png",
+         "P/E = share price ÷ GAAP diluted EPS for every company. Missing dot = negative EPS (n/m). "),
+        ("op", "non-GAAP", "S2b_price_to_earnings_non_gaap.png",
+         "P/E = share price ÷ Visible Alpha operating (non-GAAP) diluted EPS. ASML, TSMC, SK Hynix and Welltower have no "
+         "such line and are not filled with GAAP. Missing dot = negative EPS (n/m). ")):
+    col = f"PE_forward_{suf}"
+    t = df.loc[df[col].idxmax()]; lo_ = df.loc[df[col].idxmin()]
+    dumbbell(f"PE_trailing_{suf}", col, f"Trailing {lab} P/E", f"Forward {lab} P/E",
+             f"Forward {lab} P/E runs from {lo_[col]:,.1f}x at {lo_.Company} to {t[col]:,.0f}x at {t.Company}",
+             f"{lab} price to earnings, all 23 companies, as at {B.PRICE_DATE:%-d %b %Y} (log scale)", "x", fname,
+             note + FWD_NOTE, log=True)
+# 3) growth: sales vs GAAP EPS, sales vs non-GAAP EPS
+for suf, lab, fname, note in (
+        ("gaap", "GAAP", "S3a_sales_and_gaap_eps_growth.png", "EPS growth uses GAAP diluted EPS for every company. "),
+        ("op", "non-GAAP", "S3b_sales_and_non_gaap_eps_growth.png",
+         "EPS growth uses Visible Alpha operating (non-GAAP) diluted EPS only; ASML, TSMC, SK Hynix and Welltower have "
+         "none. ")):
+    col = f"EPS_growth_{suf}"
+    tm = df[df.Sector == "Tech"]
+    dumbbell("Sales_growth_fwd", col, "Sales growth", f"{lab} EPS growth",
+             f"Tech leads forward growth: median sales {tm.Sales_growth_fwd.median()*100:,.0f}%, {lab} EPS {tm[col].median()*100:,.0f}%",
+             f"Consensus growth in the forward fiscal year vs the prior year, {lab} EPS, all 23 companies", "%", fname,
+             note + "n/m = negative prior-year EPS. Axis capped at +150%; values beyond are labelled. " + FWD_NOTE, clip=150)
 
 # 4) indexed: three panels, sector medians
 def indexed_panels():
@@ -152,7 +166,7 @@ def indexed_panels():
     fig = fig_base(title, legend, None, f"Source: Visible Alpha ({B.SNAP:%-d %b %Y}); company reports.",
                    "Note: Each company rebased to its own FY25 = 100; line = median of the group. Dashed cybersecurity GAAP line is Palo Alto "
                    "alone (CrowdStrike and Cloudflare had negative FY25 GAAP EPS). Also excluded for a negative base: Bloom Energy, Intel, "
-                   "SpaceX. No operating EPS line for ASML, TSMC, SK Hynix; Welltower uses normalized FFO/share.")
+                   "SpaceX. Operating EPS panel excludes ASML, TSMC, SK Hynix and Welltower (no operating EPS line).")
     titles = {"rev": "REVENUE", "gaap": "GAAP DILUTED EPS", "op": "OPERATING DILUTED EPS"}
     ymax = max(meds[k][0].max() for k in meds) * 1.12
     x = np.arange(5)
