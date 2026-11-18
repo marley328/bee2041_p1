@@ -150,10 +150,9 @@ def indexed_panels():
             if why != "no line in VA":
                 excl.append(f"{B.SHORT[tk]} ({'GAAP' if m == 'gaap' else 'operating'} EPS)")
     fig = fig_base(title, legend, None, f"Source: Visible Alpha ({B.SNAP:%-d %b %Y}); company reports.",
-                   "Note: Cybersecurity is left off the GAAP EPS panel: only Palo Alto has a positive FY25 base. Each company rebased to its own FY25 = 100; line = median of the companies in the group. "
-                   "FY27–FY29 are consensus; FY26 mixes reported and consensus. Excluded for a negative base: "
-                   + ", ".join(sorted(set(excl))) + ". Operating EPS has no line for ASML, TSMC, SK Hynix; Welltower uses "
-                   "normalized FFO per share. Fiscal years follow each company's calendar.")
+                   "Note: Each company rebased to its own FY25 = 100; line = median of the group. Dashed cybersecurity GAAP line is Palo Alto "
+                   "alone (CrowdStrike and Cloudflare had negative FY25 GAAP EPS). Also excluded for a negative base: Bloom Energy, Intel, "
+                   "SpaceX. No operating EPS line for ASML, TSMC, SK Hynix; Welltower uses normalized FFO/share.")
     titles = {"rev": "REVENUE", "gaap": "GAAP DILUTED EPS", "op": "OPERATING DILUTED EPS"}
     ymax = max(meds[k][0].max() for k in meds) * 1.12
     x = np.arange(5)
@@ -165,19 +164,20 @@ def indexed_panels():
         ends = []
         for s in SEC_ORDER:
             med, k, _ = meds[(m, s)]
-            if k < 2:
+            if k == 0:
                 continue
-            ax.plot(x, med.values, color=SEC_COLOR[s], linewidth=3, marker="o", markersize=5.5, zorder=4)
-            ends.append((med[2029], s))
+            ax.plot(x, med.values, color=SEC_COLOR[s], linewidth=3, marker="o", markersize=5.5, zorder=4,
+                    linestyle="-" if k >= 2 else (0, (3, 2)))
+            ends.append((med[2029], s, k))
         # end labels, nudged
         fig.canvas.draw(); tr = ax.transData; placed = []
-        for v, s in sorted(ends):
+        for v, s, k in sorted(ends):
             yp = tr.transform((4, v))[1]
             if placed and yp - placed[-1] < 24: yp = placed[-1] + 24
             placed.append(yp)
-            ax.annotate(f"{v:,.0f}", (4, v), xytext=(4.15, tr.inverted().transform((0, yp))[1]), textcoords="data",
+            ax.annotate(f"{v:,.0f}" + (" PANW" if k < 2 else ""), (4, v), xytext=(4.15, tr.inverted().transform((0, yp))[1]), textcoords="data",
                         va="center", fontproperties=F["700"], fontsize=12.5, color=SEC_COLOR[s], annotation_clip=False)
-        ax.set_ylim(60, ymax)
+        ax.set_ylim(0, ymax)
         ax.set_xlim(-0.3, 4.4)
         ax.set_xticks(x, ["FY25", "FY26", "FY27E", "FY28E", "FY29E"])
         ax.yaxis.set_major_locator(plt.MaxNLocator(6))
