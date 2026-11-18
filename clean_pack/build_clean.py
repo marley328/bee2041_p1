@@ -7,6 +7,7 @@ from openpyxl.utils import get_column_letter
 
 S = "/tmp/claude-0/-home-user-bee2041-p1/d82c9cc5-7263-5271-8116-79a86939a805/scratchpad"
 VA = "/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/ceea9a74-VA_Revenue_EPS_Margins_CashFlow_Actuals_Consensus_Beat_Miss_2025_2029_AsOf_2026-11-18.xlsx"
+EXTRA_VA = ["/root/.claude/uploads/d82c9cc5-7263-5271-8116-79a86939a805/f9f30f34-MNST_Cash_Flow_VA.xlsx"]
 PRICES = f"{S}/Adjusted_Close_2026-01-01_to_2026-11-16.xlsx"
 QUOTES = f"{S}/charts/fmp_quotes.json"
 OUT = sys.argv[1]
@@ -70,6 +71,13 @@ def xl(s):
         return pd.NaT
     return pd.Series([one(v) for v in s], index=s.index, dtype="datetime64[ns]")
 act, con, bm = frame("Actuals"), frame("Consensus"), frame("Beat_Miss")
+for xf in EXTRA_VA:  # supplementary refreshed VA workbooks (same layout); main workbook wins on duplicates
+    wbx = openpyxl.load_workbook(xf, data_only=True, read_only=True)
+    def fx(name):
+        rows = list(wbx[name].iter_rows(values_only=True)); return pd.DataFrame(rows[1:], columns=rows[0])
+    act = pd.concat([act, fx("Actuals")]).drop_duplicates(["VA_Ticker_Code", "Line_Item", "Period_Label"])
+    con = pd.concat([con, fx("Consensus")]).drop_duplicates(["VA_Ticker_Code", "Line_Item", "Period_Label", "Lookback_Days"])
+    bm = pd.concat([bm, fx("Beat_Miss")]).drop_duplicates(["VA_Ticker_Code", "Line_Item", "Period_Label"])
 for d in (act, con, bm):
     d["metric"] = [linemap.get((c, l)) for c, l in zip(d.VA_Ticker_Code, d.Line_Item)]
 assert act.metric.notna().all(), act[act.metric.isna()][["VA_Ticker_Code", "Line_Item"]].drop_duplicates()
@@ -280,11 +288,9 @@ for code, tk, nm, *_r in CO:
             if tk == "WELL" and m in ("oi", "oi_adj"): why = "REIT: definition being agreed (see chat); VA lines not yet pulled"
             if tk == "WELL" and m == "gp_adj": why = "REIT: no adjusted NOI used"
             if tk == "WELL" and m == "eps_op": why = "REIT: normalized FFO/share used instead"
-            if tk == "MNST" and m in ("ocf", "capex"): continue
             miss.append((tk, nm, lab, "All years", why))
         else:
             miss.append((tk, nm, lab, ", ".join(f"FY{int(y)}" for y in missing_years), "Consensus not available for these years"))
-miss.append(("MNST", "Monster Beverage", "Operating cash flow / capex", "All periods", "Monster-only VA workbook sent for refresh; not yet returned"))
 for r in rev.itertuples():
     if pd.isna(r._10) and r.Metric in ("Revenue", "GAAP diluted EPS"):
         miss.append((r.Ticker, r.Company, f"12M consensus revision ({r.Metric})", f"FY{r._5}", "No consensus 12 months ago (recent listing / coverage)"))
