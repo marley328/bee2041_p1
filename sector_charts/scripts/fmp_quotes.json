@@ -1,0 +1,209 @@
+{
+ "KLAC": {
+  "fmp": "KLAC",
+  "price": 144.56,
+  "mcap": 188356249604,
+  "shares": 1302962435,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "KLA Corporation"
+ },
+ "LRCX": {
+  "fmp": "LRCX",
+  "price": 210.69,
+  "mcap": 263187837990,
+  "shares": 1249171000,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Lam Research Corporation"
+ },
+ "ASML": {
+  "fmp": "ASML",
+  "price": 1383.11,
+  "mcap": 533075477532,
+  "shares": 385417991,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "ASML Holding N.V."
+ },
+ "CSCO": {
+  "fmp": "CSCO",
+  "price": 95.11,
+  "mcap": 374446187773,
+  "shares": 3936980210,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Cisco Systems, Inc."
+ },
+ "AMAT": {
+  "fmp": "AMAT",
+  "price": 349.23,
+  "mcap": 277148035019,
+  "shares": 793597443,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Applied Materials, Inc."
+ },
+ "000660": {
+  "fmp": "000660.KS",
+  "price": 1144000,
+  "mcap": 813516968264000,
+  "shares": 711116231,
+  "ts": 1794983414,
+  "ccy": "KRW",
+  "name": "SK hynix Inc."
+ },
+ "MU": {
+  "fmp": "MU",
+  "price": 712.42,
+  "mcap": 806046236400,
+  "shares": 1131420000,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Micron Technology, Inc."
+ },
+ "AVGO": {
+  "fmp": "AVGO",
+  "price": 341.6,
+  "mcap": 1630671961884,
+  "shares": 4773629865,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Broadcom Inc."
+ },
+ "2330": {
+  "fmp": "2330.TW",
+  "price": 2175,
+  "mcap": 56402970000000,
+  "shares": 25932400000,
+  "ts": 1794979802,
+  "ccy": "TWD",
+  "name": "Taiwan Semiconductor Manufacturing Company Limited"
+ },
+ "PLTR": {
+  "fmp": "PLTR",
+  "price": 156.56,
+  "mcap": 361137788187,
+  "shares": 2306705341,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Palantir Technologies Inc."
+ },
+ "COST": {
+  "fmp": "COST",
+  "price": 1110.08,
+  "mcap": 491909027738,
+  "shares": 443129349,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Costco Wholesale Corporation"
+ },
+ "WMT": {
+  "fmp": "WMT",
+  "price": 127.52,
+  "mcap": 1014814253846,
+  "shares": 7958079155,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Walmart Inc."
+ },
+ "SPCX": {
+  "fmp": "SPCX",
+  "price": 141.7,
+  "mcap": 1866782340127,
+  "shares": 13174187298,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Space Exploration Technologies Corp."
+ },
+ "TSLA": {
+  "fmp": "TSLA",
+  "price": 380.11,
+  "mcap": 1502482822854,
+  "shares": 3952757946,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Tesla, Inc."
+ },
+ "SHOP": {
+  "fmp": "SHOP",
+  "price": 141.9,
+  "mcap": 182557469104,
+  "shares": 1286521981,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Shopify Inc."
+ },
+ "ARM": {
+  "fmp": "ARM",
+  "price": 183.39,
+  "mcap": 196227300000,
+  "shares": 1070000000,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Arm Holdings plc American Depositary Shares"
+ },
+ "CRWD": {
+  "fmp": "CRWD",
+  "price": 219.58,
+  "mcap": 224835612606,
+  "shares": 1023934842,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "CrowdStrike Holdings, Inc."
+ },
+ "PANW": {
+  "fmp": "PANW",
+  "price": 309.29,
+  "mcap": 253237866927,
+  "shares": 818771596,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Palo Alto Networks, Inc."
+ },
+ "INTC": {
+  "fmp": "INTC",
+  "price": 55.17,
+  "mcap": 293228550000,
+  "shares": 5315000000,
+  "ts": 1794949201,
+  "ccy": "USD",
+  "name": "Intel Corp."
+ },
+ "MNST": {
+  "fmp": "MNST",
+  "price": 44.44,
+  "mcap": 86991829814,
+  "shares": 1957511922,
+  "ts": 1794949200,
+  "ccy": "USD",
+  "name": "Monster Beverage Corporation"
+ },
+ "WELL": {
+  "fmp": "WELL",
+  "price": 245.76,
+  "mcap": 180291959931,
+  "shares": 733609863,
+  "ts": 1794949357,
+  "ccy": "USD",
+  "name": "Welltower Inc."
+ },
+ "BE": {
+  "fmp": "BE",
+  "price": 173.46,
+  "mcap": 51284609274,
+  "shares": 295656689,
+  "ts": 1794949202,
+  "ccy": "USD",
+  "name": "Bloom Energy Corporation"
+ },
+ "NET": {
+  "fmp": "NET",
+  "price": 284.785,
+  "mcap": 101359757629,
+  "shares": 355916771,
+  "ts": 1794949199,
+  "ccy": "USD",
+  "name": "Cloudflare, Inc."
+ }
+}
