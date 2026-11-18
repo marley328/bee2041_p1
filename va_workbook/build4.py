@@ -6,7 +6,8 @@ from openpyxl.styles.differential import DifferentialStyle
 
 SRC, OUT, SRC2, SRC3, SBCF = sys.argv[1:6]
 SNAPSHOT = datetime.datetime(2026, 11, 18)
-FY_START, FY_END = 2025, 2029
+import os as _os
+FY_START, FY_END = int(_os.environ.get("FY_START", 2025)), int(_os.environ.get("FY_END", 2029))
 LOOKBACKS = [0, -7, -14, -30, -60, -90, -120, -180, -365]
 
 COMPANIES = [  # VA code, company name, currency
