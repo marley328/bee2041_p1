@@ -79,3 +79,7 @@ NET_US,Gross profit/(loss),USD m,Gross profit
 NET_US,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
 NET_US,Operating income/(loss),USD m,Operating income
 NET_US,Operating income/(loss) - Operating,USD m,Operating income (operating)
+NVDA,Gross profit/loss,USD m,Gross profit
+NVDA,Gross profit/(loss) - Operating,USD m,Gross profit (operating)
+NVDA,Income/(loss) from operations,USD m,Operating income
+NVDA,Income/(loss) from operations - Operating,USD m,Operating income (operating)

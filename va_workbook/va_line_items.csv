@@ -65,3 +65,6 @@ BE_US,EPS-Diluted - Operating,USD/share,Operating diluted EPS
 NET_US,Total revenue,USD m,Revenue
 NET_US,EPS - Diluted,USD/share,GAAP diluted EPS
 NET_US,EPS - Diluted - Operating,USD/share,Operating diluted EPS
+NVDA,Revenue,USD m,Revenue
+NVDA,EPS - Diluted,USD/share,GAAP diluted EPS
+NVDA,EPS - Diluted - Operating,USD/share,Operating diluted EPS

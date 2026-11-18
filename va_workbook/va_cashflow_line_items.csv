@@ -1,0 +1,70 @@
+Ticker,Line Item,Unit,Metric,Capex sign in VA
+WELL_US,Net cash provided from (used in) operating activities,USD m,Operating cash flow,
+WELL_US,Cash disbursed for capital expenditure,USD m,Capex,positive
+SPCX_US,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+SPCX_US,"Purchase of property, plant and equipment",USD m,Capex,positive
+TSLA,Net cash provided by (used in) operating activities,USD m,Operating cash flow,
+TSLA,Purchases of property and equipment excluding capital leases,USD m,Capex,positive
+WMT,Net cash provided/(used) by operating activities,USD m,Operating cash flow,
+WMT,Payments for property and equipment,USD m,Capex,positive
+COST,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+COST,Capital expenditure,USD m,Capex,positive
+PLTR_US,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+PLTR_US,Purchases of property and equipment,USD m,Capex,positive
+INTC,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+INTC,"Additions to property, plant and equipment",USD m,Capex,positive
+PANW,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+PANW,"Purchases of property, equipment, and other assets",USD m,Capex,positive
+CRWD_US,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+CRWD_US,Purchases of property and equipment,USD m,Capex,positive
+CRWD_US,Capitalized internal used software,USD m,Other capex (software/intangibles),positive
+ARM_GB,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+ARM_GB,"Purchases of property, plant and equipment",USD m,Capex,positive
+ARM_GB,Purchase of intangible assets,USD m,Other capex (software/intangibles),positive
+SHOP_US,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+SHOP_US,Acquisitions of property and equipment,USD m,Capex,positive
+SHOP_US,Acquisition of intangible assets,USD m,Other capex (software/intangibles),positive
+NET_US,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+NET_US,Purchases of property and equipment,USD m,Capex,positive
+NET_US,Capitalized internal used software,USD m,Other capex (software/intangibles),positive
+BE_US,Net cash flows provided by/(used in) operating activities,USD m,Operating cash flow,
+BE_US,Capital Additions,USD m,Capex,positive
+SPCX_US,Share-based compensation,USD m,Stock-based compensation,positive
+TSLA,Stock-based compensation,USD m,Stock-based compensation,positive
+PLTR_US,Stock-based compensation,USD m,Stock-based compensation,positive
+INTC,Share-based compensation,USD m,Stock-based compensation,positive
+PANW,Share-based compensation for equity based awards,USD m,Stock-based compensation,positive
+CRWD_US,Stock based compensation expense,USD m,Stock-based compensation,positive
+ARM_GB,Stock based compensation expense - CF,USD m,Stock-based compensation,positive
+SHOP_US,Stock-based compensation,USD m,Stock-based compensation,positive
+NET_US,Stock based compensation,USD m,Stock-based compensation,positive
+BE_US,Stock-based compensation,USD m,Stock-based compensation,positive
+2330_TW,Net cash flows provided by/(used in) operating activities,TWD m,Operating cash flow,
+2330_TW,Capital expenditure,TWD m,Capex,positive
+AVGO,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+AVGO,"Purchase of property, plant and equipment",USD m,Capex,positive
+AVGO,Share-based compensation,USD m,Stock-based compensation,positive
+MU,Net cash provided by/(used for) operating activities,USD m,Operating cash flow,
+MU,"Expenditures for property, plant and equipment",USD m,Capex,positive
+MU,Stocks-based compensation,USD m,Stock-based compensation,positive
+000660_KR,Net cash flows provided by/(used in) operating activities,KRW bn,Operating cash flow,
+000660_KR,Capital expenditure,KRW bn,Capex,positive
+ASML,Net cash provided by/(used in) operating activities,EUR m,Operating cash flow,
+ASML,"Purchase of property, plant and equipment",EUR m,Capex,positive
+ASML,Purchase of intangible assets,EUR m,Other capex (software/intangibles),positive
+ASML,Share based compensation,EUR m,Stock-based compensation,positive
+CSCO,Net cash provided by operating activities,USD m,Operating cash flow,
+CSCO,Acquisition of property and equipment,USD m,Capex,positive
+CSCO,Share-based compensation expense,USD m,Stock-based compensation,positive
+AMAT,Cash provided by/(used in) operating activities,USD m,Operating cash flow,
+AMAT,Capital expenditures,USD m,Capex,positive
+AMAT,Share-based compensation,USD m,Stock-based compensation,positive
+LRCX,Net cash provided by operating activities,USD m,Operating cash flow,
+LRCX,Capital expenditures and intangible assets,USD m,Capex,negative
+LRCX,Equity-based compensation expense,USD m,Stock-based compensation,positive
+KLAC,Net cash provided by/(used in) operating activities,USD m,Operating cash flow,
+KLAC,"Capital expenditures, net",USD m,Capex,positive
+KLAC,Stock-based compensation expense,USD m,Stock-based compensation,positive
+NVDA,Net cash provided by operating activities,USD m,Operating cash flow,
+NVDA,Capital expenditure,USD m,Capex,positive
+NVDA,Stock-based compensation expense,USD m,Stock-based compensation,positive
