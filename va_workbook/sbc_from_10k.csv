@@ -1,10 +1,10 @@
 Ticker,Fiscal_Period,SBC_USD_m,Source line,Filing
-WMT,FY-2024,2093,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2026 (wmt-20260131)
-WMT,FY-2025,2769,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2026 (wmt-20260131)
-WMT,FY-2026,3603,Share-based compensation expense (Note: Share-Based Compensation; incl. ~$0.7bn PhonePe modification charge),10-K FYE 31 Jan 2026 (wmt-20260131)
-COST,FY-2024,818,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
-COST,FY-2025,860,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
-COST,FY-2026,924,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
+WMT,FY-2024,2093.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2026 (wmt-20260131)
+WMT,FY-2025,2769.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2026 (wmt-20260131)
+WMT,FY-2026,3603.0,Share-based compensation expense (Note: Share-Based Compensation; incl. ~$0.7bn PhonePe modification charge),10-K FYE 31 Jan 2026 (wmt-20260131)
+COST,FY-2024,818.0,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
+COST,FY-2025,860.0,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
+COST,FY-2026,924.0,Stock-based compensation (cash flow statement),10-K FYE 30 Aug 2026 (cost-20260830)
 WELL_US,FY-2023,37.199,Stock-based compensation expense (cash flow statement),10-K FYE 31 Dec 2025 (well-20251231)
 WELL_US,FY-2024,75.821,Stock-based compensation expense (cash flow statement),10-K FYE 31 Dec 2025 (well-20251231)
 WELL_US,FY-2025,1556.732,Stock-based compensation expense (cash flow statement; $1408.7m one-off Executive & Key Employee LTIP Unit Awards),10-K FYE 31 Dec 2025 (well-20251231)
@@ -18,7 +18,7 @@ WELL_US,FY-2026,200.5,Projected: normalised FY25 SBC (1556.7 less 1408.7 LTIP on
 WELL_US,FY-2027,230.1,Projected: 1.421% of consensus property revenues,Our assumption - not consensus
 WELL_US,FY-2028,256.1,Projected: 1.421% of consensus property revenues,Our assumption - not consensus
 WELL_US,FY-2029,281.3,Projected: 1.421% of consensus property revenues,Our assumption - not consensus
-000660_KR,FY-2024,104.110,Share-based payments (cash flow reconciliation; KRW bn),SK hynix 2025 4Q consolidated financial statements (user screenshot)
+000660_KR,FY-2024,104.11,Share-based payments (cash flow reconciliation; KRW bn),SK hynix 2025 4Q consolidated financial statements (user screenshot)
 000660_KR,FY-2025,414.114,Share-based payments (cash flow reconciliation; KRW bn),SK hynix 2025 4Q consolidated financial statements (user screenshot)
 2330_TW,FY-2023,483.0,Share-based compensation (cash flow statement; TWD m; equity-settled),20-F FY2025 (tsm-20251231) SEC EDGAR
 2330_TW,FY-2024,1242.7,Share-based compensation (cash flow statement; TWD m; equity-settled),20-F FY2025 (tsm-20251231) SEC EDGAR
@@ -38,3 +38,46 @@ MNST,FY-2026,149.5,Projected: FY25 SBC at 1.515% of consensus net revenue,Our as
 MNST,FY-2027,164.0,Projected: 1.515% of consensus net revenue,Our assumption - not consensus
 MNST,FY-2028,178.3,Projected: 1.515% of consensus net revenue,Our assumption - not consensus
 MNST,FY-2029,193.9,Projected: 1.515% of consensus net revenue,Our assumption - not consensus
+WMT,FY-2016,448.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2017 (Exhibit 13 annual report) (SEC EDGAR)
+WMT,FY-2017,596.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2017 (Exhibit 13 annual report) (SEC EDGAR)
+WMT,FY-2018,626.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2020 (SEC EDGAR)
+WMT,FY-2019,773.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2020 (SEC EDGAR)
+WMT,FY-2020,854.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2020 (SEC EDGAR)
+WMT,FY-2021,1169.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2023 (SEC EDGAR)
+WMT,FY-2022,1163.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2023 (SEC EDGAR)
+WMT,FY-2023,1578.0,Share-based compensation expense (Note: Share-Based Compensation),10-K FYE 31 Jan 2023 (SEC EDGAR)
+COST,FY-2016,459.0,Stock-based compensation (cash flow statement),10-K FYE Aug 2017 (SEC EDGAR)
+COST,FY-2017,514.0,Stock-based compensation (cash flow statement),10-K FYE Aug 2017 (SEC EDGAR)
+COST,FY-2018,544.0,Stock-based compensation (cash flow statement),10-K FYE Aug 2020 (SEC EDGAR)
+COST,FY-2019,595.0,Stock-based compensation (cash flow statement),10-K FYE Aug 2020 (SEC EDGAR)
+COST,FY-2020,619.0,Stock-based compensation (cash flow statement),10-K FYE Aug 2020 (SEC EDGAR)
+COST,FY-2021,665.0,Stock-based compensation (cash flow statement),10-K FYE Sep 2023 (SEC EDGAR)
+COST,FY-2022,724.0,Stock-based compensation (cash flow statement),10-K FYE Sep 2023 (SEC EDGAR)
+COST,FY-2023,774.0,Stock-based compensation (cash flow statement),10-K FYE Sep 2023 (SEC EDGAR)
+WELL_US,FY-2016,32.075,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2016 (SEC EDGAR)
+WELL_US,FY-2017,19.102,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+WELL_US,FY-2018,27.646,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+WELL_US,FY-2019,25.047,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+WELL_US,FY-2020,28.318,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+WELL_US,FY-2021,17.812,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+WELL_US,FY-2022,26.149,Stock-based compensation expense (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+MNST,FY-2016,45.848,Stock-based compensation (cash flow statement),10-K FYE Dec 2016 (SEC EDGAR)
+MNST,FY-2017,52.282,Stock-based compensation (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+MNST,FY-2018,57.111,Stock-based compensation (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+MNST,FY-2019,63.356,Stock-based compensation (cash flow statement),10-K FYE Dec 2019 (SEC EDGAR)
+MNST,FY-2020,70.289,Stock-based compensation (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+MNST,FY-2021,70.483,Stock-based compensation (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+MNST,FY-2022,64.109,Stock-based compensation (cash flow statement),10-K FYE Dec 2022 (SEC EDGAR)
+2330_TW,FY-2016,0.0,No share-based compensation line (none reported),20-F FY2016 (SEC EDGAR)
+2330_TW,FY-2017,0.0,"Share-based compensation shown as ""—"" (TWD m)",20-F FY2019 (SEC EDGAR)
+2330_TW,FY-2018,0.0,"Share-based compensation shown as ""—"" (TWD m)",20-F FY2019 (SEC EDGAR)
+2330_TW,FY-2019,2.8,Share-based compensation (cash flow statement; TWD m),20-F FY2019 (SEC EDGAR)
+2330_TW,FY-2020,6.6,Share-based compensation (cash flow statement; TWD m),20-F FY2022 (SEC EDGAR)
+2330_TW,FY-2021,7.8,Share-based compensation (cash flow statement; TWD m),20-F FY2022 (SEC EDGAR)
+2330_TW,FY-2022,302.4,Share-based compensation (cash flow statement; TWD m),20-F FY2022 (SEC EDGAR)
+WMT,FY-2030,3494.9,Projected: 0.407% of FY2030 consensus revenue,Our assumption - not consensus
+COST,FY-2030,1241.3,Projected: 0.305% of FY2030 consensus revenue,Our assumption - not consensus
+WELL_US,FY-2030,319.1,Projected: 1.421% of FY2030 consensus revenue,Our assumption - not consensus
+2330_TW,FY-2030,4708.4,Projected: 0.033% of FY2030 consensus revenue,Our assumption - not consensus
+000660_KR,FY-2030,2181.4,Projected: 0.426% of FY2030 consensus revenue,Our assumption - not consensus
+MNST,FY-2030,210.7,Projected: 1.515% of FY2030 consensus revenue,Our assumption - not consensus
